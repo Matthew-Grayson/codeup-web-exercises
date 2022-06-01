@@ -21,7 +21,7 @@ var userInput3 = prompt("A student can be enrolled in a class only if the class 
 //}
 alert("isScheduleConflict() + isClassAvailable()")
 var userInput4 = prompt("A product offer can be applied only if a person buys more than 2 items, and the offer has not expired. Premium members do not need to buy a specific amount of products.")
-// funtion isExpired() {
+// function isExpired() {
 //}
 //function isMember() {
 //}
