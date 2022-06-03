@@ -94,7 +94,26 @@ analyzeColor(userColor);
  * Test your function by passing it various values and checking for the expected
  * return value.
  */
-
+function calculateTotal(luckyNum, total) {
+    if (luckyNum === 1) {
+        return total * 0.9
+    }
+    else if (luckyNum === 2) {
+        return total * 0.75
+    }
+    else if (luckyNum === 3) {
+        return total * 0.65
+    }
+    else if (luckyNum === 4) {
+        return total * 0.5
+    }
+    else if (luckyNum === 5) {
+        return 0
+    }
+    else {
+        return total
+    }
+}
 /**
  * TODO:
  * Uncomment the line below to generate a random number between 0 and 5.
@@ -104,7 +123,9 @@ analyzeColor(userColor);
  * price before the discount was, and what their price after the discount is.
  */
 // Generate a random number between 0 and 6
-// var luckyNumber = Math.floor(Math.random() * 6);
+var luckyNumber = Math.floor(Math.random() * 6);
+var total = prompt("Please enter your total bill.")
+alert("Your lucky number is " + luckyNumber + ". Your price was $" + total + ". Your price after discount is $" + calculateTotal(luckyNumber, total) + ".");
 
 /**
  * TODO:
@@ -124,3 +145,26 @@ analyzeColor(userColor);
  * Can you refactor your code to use functions?
  * HINT: The way we prompt for a value could be improved
  */
+var userIntoIt = confirm("Would you like to enter a number?")
+if (userIntoIt) {
+    var userNum = prompt("Please enter an integer.")
+    if (isNaN(userNum)) {
+        alert("That's not an integer.")
+    }
+    else {
+        if (userNum % 2 === 0) {
+            alert("Your number is even.")
+        } else {
+            alert("Your number is odd")
+        }
+        alert("Your number plus 100 is " + (parseInt(userNum) + 100) + ".")
+        if (userNum >= 0) {
+            alert("Your number is positive.")
+        } else {
+            alert("Your number is negative.")
+        }
+    }
+}
+else {
+    alert("User just isn't feelin' it.")
+}
