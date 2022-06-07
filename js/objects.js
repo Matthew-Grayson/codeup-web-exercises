@@ -69,13 +69,7 @@
      * > console.log(books[0].author.firstName) // "Douglas"
      * > console.log(books[0].author.lastName) // "Adams"
      */
-    var books = [
-        {title: "The Salmon of Doubt", author: {firstName: "Douglas", lastName: "Adams"}},
-        {title: "Walkaway", author: {firstName: "Cory", lastName: "Doctorow"}},
-        {title: "A Brief History of Time", author: {firstName: "Stephen", lastName: "Hawking"}}
-    ];
 
-    console.log(books[0].author.firstName);
     /**
      * TODO:
      * Loop through the books array and output the following information about
@@ -111,5 +105,15 @@
      *   outputs the information described above. Refactor your loop to use your
      *   `showBookInfo` function.
      */
+    var books = [
+        {title: "The Salmon of Doubt", author: {firstName: "Douglas", lastName: "Adams"}},
+        {title: "Walkaway", author: {firstName: "Cory", lastName: "Doctorow"}},
+        {title: "A Brief History of Time", author: {firstName: "Stephen", lastName: "Hawking"}},
+        {title: "Animal Farm", author: {firstName: "George", lastName: "Orwell"}},
+        {title: "Pre-Suasion", author: {firstName: "Robert", lastName: "Cialdini"}}
+    ];
+    books.forEach(function({title,author}, index) {
+        console.log("Book #" + (index + 1) + "\nTitle: " + title + "\nAuthor: " + author.firstName + " " + author.lastName)
+    })
 
 })();
