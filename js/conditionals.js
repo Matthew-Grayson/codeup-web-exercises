@@ -148,7 +148,7 @@ alert("Your lucky number is " + luckyNumber + ". Your price was $" + total + ". 
 var userIntoIt = confirm("Would you like to enter a number?")
 if (userIntoIt) {
     var userNum = prompt("Please enter an integer.")
-    if (isNaN(userNum)) {
+    if (isNaN(Number(userNum))) {
         alert("That's not an integer.")
     }
     else {
