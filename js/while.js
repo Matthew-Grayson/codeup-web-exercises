@@ -1,4 +1,4 @@
-for(let i = 1; i < 16; i++) {
+for(let i = 1; i <= 16; i++) {
     console.log(Math.pow(2, i));
 }
 
