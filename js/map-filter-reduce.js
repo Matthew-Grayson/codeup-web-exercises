@@ -46,19 +46,21 @@ const users = [
 //     console.log(output);
 // }
 
-
-
 // function lang3Plus(input) {
 //     return this.languages >= 3;
 // }
 // const result = users.filter(lang3Plus);
 
+// console.log(users.filter(function ({languages}) {
+//     return languages.length >= 3;
+// }));
 
 const lang3Plus = users.filter(function({languages}) {
     return languages.length >= 3;
 });
 console.log(lang3Plus);
 
-// console.log(users.filter(function ({languages}) {
-//     return languages.length >= 3;
-// }));
+const emailAddresses = users.map(function({email}) {
+    return email;
+});
+console.log(emailAddresses);
