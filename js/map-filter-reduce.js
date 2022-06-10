@@ -64,3 +64,16 @@ const emailAddresses = users.map(function({email}) {
     return email;
 });
 console.log(emailAddresses);
+
+
+const initialValue = 0;
+const totalXp = users.reduce(
+    (runningTotal, {yearsOfExperience}) => runningTotal + yearsOfExperience,
+    initialValue
+);
+console.log(totalXp);
+console.log("Average years of experience is " + totalXp / users.length + ".")
+
+const longestEmail = users.reduce(
+    ({email}) =>
+)
