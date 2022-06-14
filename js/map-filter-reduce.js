@@ -55,25 +55,27 @@ const users = [
 //     return languages.length >= 3;
 // }));
 
-const lang3Plus = users.filter(function({languages}) {
-    return languages.length >= 3;
+const lang3Plus = users.filter(function(user) {
+    return user.languages.length >= 3;
 });
 console.log(lang3Plus);
 
-const emailAddresses = users.map(function({email}) {
-    return email;
+const emailAddresses = users.map(function(user) {
+    return user.email;
 });
 console.log(emailAddresses);
 
-
-const initialValue = 0;
 const totalXp = users.reduce(
-    (runningTotal, {yearsOfExperience}) => runningTotal + yearsOfExperience,
-    initialValue
-);
-console.log(totalXp);
-console.log("Average years of experience is " + totalXp / users.length + ".")
+    (runningTotal, user) => runningTotal + user.yearsOfExperience, 0);
+console.log(`Combined user experience is ${totalXp} years.`);
+console.log(`Average user experience is ${totalXp / users.length} years.`)
 
-const longestEmail = users.reduce(
-    ({email}) =>
-)
+
+// const langs = users.reduce(
+//     (collection, user) => (collection + "," + user.languages).split(","), []);
+//
+// console.log(langs);
+
+const langs = new Set(users.reduce(
+    (collection, user) => collection.concat(user.languages), []));
+console.log(langs);
