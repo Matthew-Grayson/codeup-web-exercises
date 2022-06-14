@@ -24,7 +24,7 @@
      * > console.log(person.sayHello()) // "Hello from Rick Sanchez!"
      */
     person.sayHello = function() {
-        console.log("Hello from " + person.firstName + " " + person.lastName + "!");
+        return `Hello from ${this.firstName} ${this.lastName}!`;
     }
     console.log(person.sayHello())
 
@@ -48,14 +48,23 @@
         {name: 'George', amount: 320}
     ];
 
-    shoppers.forEach(function({name, amount}) {
-        if (amount >= 200) {
-            console.log(name + ", your total was $" + amount.toFixed(2) + ". Your total after discount is $" + (amount * .88).toFixed(2) + ".")
+    // shoppers.forEach(function({name, amount}) {
+    //     if (amount >= 200) {
+    //         console.log(name + ", your total was $" + amount.toFixed(2) + ". Your total after discount is $" + (amount * .88).toFixed(2) + ".")
+    //     }
+    //     else {
+    //         console.log(name + ", your total is $" + amount.toFixed(2) + ".")
+    //     }
+    // })
+    shoppers.forEach(function(shopper) {
+        if(shopper.amount >= 200) {
+            console.log(`${shopper.name}, your total was $${shopper.amount.toFixed(2)}.
+After discount, you owe $${(shopper.amount * 0.88).toFixed(2)}.`);
         }
         else {
-            console.log(name + ", your total is $" + amount.toFixed(2) + ".")
+            console.log(`${shopper.name}, you owe $${shopper.amount.toFixed(2)}.`);
         }
-    })
+    });
 
     /** TODO:
      * Create an array of objects that represent books and store it in a
