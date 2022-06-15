@@ -14,11 +14,20 @@
         <label for="bio">Bio</label>
             <textarea id="bio" name="bio"></textarea>
         <br>
-        <label for="q1"><h4>How did you hear about us?</h4></label>
-            <input type="radio" id="q1" name="q1" value="a">Billboard<br>
-            <input type="radio" id="q1" name="q1" value="b">Radio Advertisement<br>
-            <input type="radio" id="q1" name="q1" value="c">Internet Advertisement<br>
-            <input type="radio" id="q1" name="q1" value="d">Other<br>
+        <label><h4>How did you hear about us?</h4></label>
+            <input type="checkbox" name="q1" value="a">Billboard<br>
+            <input type="checkbox" name="q1" value="b">Radio Advertisement<br>
+            <input type="checkbox" name="q1" value="c">Internet Advertisement<br>
+            <input type="checkbox" name="q1" value="d">Other<br>
+        <label for="browser"><h4>Please select which browser you are using.</h4></label>
+            <select id="browser">
+                <option value="blank"></option>
+                <option value="edge">Microsoft Edge</option>
+                <option value="firefox">Mozilla Firefox</option>
+                <option value="safari">Safari</option>
+                <option value="chrome">Chrome</option>
+                <option value="other">Other</option>
+            </select><br>
         <input type="submit">
     </form>
 
