@@ -68,14 +68,21 @@ console.log(emailAddresses);
 const totalXp = users.reduce(
     (runningTotal, user) => runningTotal + user.yearsOfExperience, 0);
 console.log(`Combined user experience is ${totalXp} years.`);
-console.log(`Average user experience is ${totalXp / users.length} years.`)
+console.log(`Average user experience is ${totalXp / users.length} years.`);
 
+const longestEmail = users.reduce(function(longestSoFar, user) {
+    if(user.email.length > longestSoFar.length) {
+        return user.email;
+    }
+    return longestSoFar
+}, "");
+console.log(`The longest user email is ${longestEmail}.`);
 
-// const langs = users.reduce(
-//     (collection, user) => (collection + "," + user.languages).split(","), []);
-//
-// console.log(langs);
+const stringOfUsers = users.reduce(
+    (accumulation, user) => accumulation.concat(`, ${user.name}`), "");
+console.log(`Your instructors are, in no particular order${stringOfUsers}.`);
 
 const langs = new Set(users.reduce(
     (collection, user) => collection.concat(user.languages), []));
 console.log(langs);
+
