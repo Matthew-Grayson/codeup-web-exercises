@@ -2,3 +2,44 @@
     color: purple;
     text-decoration: underline;
 }
+#main-heading {
+    text-align: center;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: darkslategrey;
+    text-decoration: underline;
+}
+body {
+    background-image: url(/img/SmithRockCowdog.jpeg);
+    background-size: 150%;
+    background-attachment: fixed;
+    background-color: mintcream;
+    font-family: "Tiro Devanagari Marathi";
+}
+li {
+    list-style-type: lower-alpha;
+}
+ul {
+    list-style-image: url(/img/kali-dragon-icon-sm.png);
+}
+table, td, tr {
+    padding: 10px;
+}
+img:hover {
+    transform: rotate();
+}
+
+a:link {
+    color: lightblue;
+}
+a:visited {
+    color: lightsalmon;
+}
+a:hover {
+    color: lightgoldenrodyellow;
+    font-size: 1.1em;
+}
+a:active {
+    color: lightgreen;
+    font-size: 1.2em;
+}
