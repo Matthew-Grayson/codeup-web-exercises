@@ -6,14 +6,11 @@ body, html {
     font-family: Arial, Ubuntu, sans-serif;
 }
 
-div {
+.message {
     border: 1px solid lightgrey;
     border-radius: .5em;
     padding: .5em;
     margin: 1em;
-}
-
-div {
     --bg-info-color: lightblue;
     --text-info-color: darkblue;
     --bg-success-color: lightgreen;
@@ -24,19 +21,19 @@ div {
     --text-error-color: darkred;
 }
 
-div.message-info {
+.message-info {
     color: var(--text-info-color);
     background-color: var(--bg-info-color);
 }
-div.message-success {
+.message-success {
     color: var(--text-success-color);
     background-color: var(--bg-success-color);
 }
-div.message-warning {
+.message-warning {
     color: var(--text-warning-color);
     background-color: var(--bg-warning-color);
 }
-div.message-error {
+.message-error {
     color: var(--text-error-color);
     background-color: var(--bg-error-color);
 }
