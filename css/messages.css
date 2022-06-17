@@ -1,3 +1,14 @@
+:root {
+    --bg-info-color: lightblue;
+    --text-info-color: darkblue;
+    --bg-success-color: lightgreen;
+    --text-success-color: darkgreen;
+    --bg-warning-color: lightgoldenrodyellow;
+    --text-warning-color: darkgoldenrod;
+    --bg-error-color: lightpink;
+    --text-error-color: darkred;
+}
+
 body, html {
     height: 80%;
     width: 80%;
@@ -11,14 +22,6 @@ body, html {
     border-radius: .5em;
     padding: .5em;
     margin: 1em;
-    --bg-info-color: lightblue;
-    --text-info-color: darkblue;
-    --bg-success-color: lightgreen;
-    --text-success-color: darkgreen;
-    --bg-warning-color: lightgoldenrodyellow;
-    --text-warning-color: darkgoldenrod;
-    --bg-error-color: lightpink;
-    --text-error-color: darkred;
 }
 
 .message-info {
