@@ -1,39 +1,22 @@
 :root {
     --nav-bg: #C1C1C1;
-
+}
+a:hover {
+    color: darkblue;
 }
 .top-nav {
     background: var(--nav-bg);
-    position: absolute;
-    width: 100%;
     display: flex;
-}
-.nav {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
+    align-items: center;
 }
 .nav-link {
     color: black;
     font-weight: bold;
     text-decoration: none;
     padding: 1.5em;
-    display: flex;
 }
-.nav-item {
-    display: flex;
-    margin: 0 auto;
-    padding: 1.5em 0;
-}
-.nav-item-left {
 
-}
-.nav-item-right {
-
-}
 .logo {
     height: 3em;
-    padding: 0;
-    align-self: center;
-    display: flex;
+    margin: auto;
 }
