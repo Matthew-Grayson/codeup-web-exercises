@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Welcome to Pizza World!</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/custom.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -36,20 +37,56 @@
         </div>
     </div>
 </nav>
-<div class="container-fluid">
-    <img class="w-100" src="img/pizza.png" alt="Pizza">
-    <div class="p-1 mb-2  bg-transparent bg-gradient text-black text-center">Welcome to Pizza World!</div>
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Size and Crust</a>
+<div class="container-xxl">
+    <div id="banner" style="background-image: url('img/pizza.png'); background-size: cover">
+        <h2 class="pt-3 pb-3 text-center w-100" style="background-color: rgba(255,255,255,0.8); ">Welcome to Pizza
+            World!</h2>
+    </div>
+    <h2>Build your own pizza!</h2>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="size-crust-tab" data-bs-toggle="tab" data-bs-target="#size-crust" type="button" role="tab" aria-controls="size-crust" aria-selected="true">Size and Crust</button>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Cheese and Sauce</a>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="cheese-sauce-tab" data-bs-toggle="tab" data-bs-target="#cheese-sauce" type="button" role="tab" aria-controls="cheese-sauce" aria-selected="false">Cheese and Sauce</button>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Toppings</a>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="toppings-tab" data-bs-toggle="tab" data-bs-target="#toppings" type="button" role="tab" aria-controls="toppings" aria-selected="false">Toppings</button>
         </li>
     </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="size-crust" role="tabpanel" aria-labelledby="size-crust-tab">
+            <div class="card mb-2">
+                <div class="p-3 mb-2 bg-primary text-white">Choose Size and Crust</div>
+                <div class="card m-3">
+                    <div class="card-header">
+                        Hand-Tossed
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Garlic-seasoned crust with a rich, buttery taste.</li>
+                        <li class="list-group-item">Small (10")</li>
+                        <li class="list-group-item">Medium (12")</li>
+                    </ul>
+                </div>
+                <div class="card m-3">
+                    <div class="card-header">
+                        Crispy Thin
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Thin enough for optimum crispy to crunchy ratio.</li>
+                        <li class="list-group-item">Small (12")</li>
+                        <li class="list-group-item">Medium (14")</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="cheese-sauce" role="tabpanel" aria-labelledby="cheese-sauce-tab">
+            <div class="p-3 mb-2 bg-primary text-white">Choose Cheese and Sauce</div>
+        </div>
+        <div class="tab-pane fade" id="toppings" role="tabpanel" aria-labelledby="toppings-tab">
+            <div class="p-3 mb-2 bg-primary text-white">Choose Toppings</div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
