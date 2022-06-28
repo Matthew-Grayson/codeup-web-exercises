@@ -122,7 +122,62 @@
             </div>
         </div>
         <div class="tab-pane fade" id="cheese-sauce" role="tabpanel" aria-labelledby="cheese-sauce-tab">
-            <div class="p-3 mb-2 bg-primary text-white">Choose Cheese and Sauce</div>
+            <div class="card mb-2">
+                <div class="p-3 mb-2 bg-primary text-white">Choose Cheese and Sauce</div>
+                <div class="card m-3">
+                    <div class="card-header">
+                        Cheese
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">How Much?</li>
+                        <li class="list-group-item d-flex">
+                            <select class="form-select">
+                                <option value="1">Extra</option>
+                                <option selected value="2">Normal</option>
+                                <option value="3">Light</option>
+                                <option value="4">None</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card m-3">
+                    <div class="card-header">
+                        Sauce
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">What Type?</li>
+                        <li class="list-group-item d-flex">
+                            <select class="form-select">
+                                <option selected value="1">Marinara</option>
+                                <option value="2">Alfredo</option>
+                                <option value="3">Buffalo</option>
+                                <option value="4">None</option>
+                            </select>
+                        </li>
+                        <li class="list-group-item">How Much?</li>
+                        <li class="list-group-item d-flex">
+                            <select class="form-select">
+                                <option value="1">Extra</option>
+                                <option selected value="2">Normal</option>
+                                <option value="3">Light</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <ul class="nav nav-tabs" id="myTab1" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="size-crust-tab1" data-bs-target="#size-crust" aria-controls="size-crust"></button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="cheese-sauce-tab1" data-bs-toggle="tab" data-bs-target="#cheese-sauce" type="button" aria-controls="cheese-sauce" aria-selected="false">Next ></button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="toppings-tab1" data-bs-target="#toppings" aria-controls="toppings"></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
         <div class="tab-pane fade" id="toppings" role="tabpanel" aria-labelledby="toppings-tab">
             <div class="p-3 mb-2 bg-primary text-white">Choose Toppings</div>
