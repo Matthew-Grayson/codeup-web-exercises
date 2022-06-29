@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>DOM: Query and Modify</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 </head>
 <body>
 
@@ -24,40 +26,57 @@
     pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
     culpa qui officia deserunt mollit anim id est laborum.
 </p>
-
+<div class="btn-group-vertical me-2" role="group" aria-label="Button Group">
+    <button id="chHeader" type="button" class="btn btn-primary" aria-label="Change Header">Change Header</button>
+    <button id="chSubHeader" type="button" class="btn btn-primary" aria-label="Change Sub-Header">Change Sub-Header</button>
+    <button id="chList" type="button" class="btn btn-primary" aria-label="Change List">Change List</button>
+    <button id="chMessage" type="button" class="btn btn-primary" aria-label="Change Message">Change Message</button>
+</div>
 <script>
         "use strict";
         // TODO: Uncomment next line and get the main header element by id
         var mainHeader = document.getElementById("main-header");
 
         // TODO: Set inner html of mainHeader to "JavaScript is Cool"
-        mainHeader.setAttribute("id", "JavaScript is Cool")
+        var changeHeader = function(event) {
+            mainHeader.innerHTML = "JavaScript is Cool"
+        }
+        document.getElementById('chHeader').addEventListener('click', changeHeader);
 
         // TODO: Uncomment the next line and get the sub header element by id
         var subHeader = document.getElementById('sub-header');
 
         // TODO: Set the text color of subHeader to blue
-        subHeader.setAttribute("style", "color: blue")
+        var changeSubHeader = function(event) {
+            subHeader.setAttribute("style", "color: blue");
+        }
+        document.getElementById('chSubHeader').addEventListener('click', changeSubHeader);
 
         // TODO: Uncomment the next line and get all list items
         var listItems = document.getElementsByTagName("li");
 
         // TODO: Set text color on every other list item to grey
-        for(let i = 0; i < 5; i++) {
-            if(i % 2 === 0) {
-                listItems[i].setAttribute("style", "color: grey")
-
+        var changeList = function(event) {
+            for(let i = 0; i < 5; i++) {
+                if(i % 2 === 0) {
+                    listItems[i].setAttribute("style", "color: grey")
+                }
             }
+            document.querySelector('[data-dbid="1"]').setAttribute("style", "color: blue")
         }
-        // TODO: Set text color of li with dbid = 1 to blue
-        document.querySelector('[data-dbid="1"]').setAttribute("style", "color: blue")
+        document.getElementById('chList').addEventListener('click', changeList);
 
+        // TODO: Set text color of li with dbid = 1 to blue
         // TODO: Uncomment the next line and get all elements with class name sub-paragraph
         var subParagraphs = document.getElementsByClassName("sub-paragraph");
 
         // TODO: Change the text in the first sub paragraph to "Mission Accomplished!"
-        subParagraphs[0].innerHTML = "Mission Accomplished!";
+        var changeMessage = function(event) {
+            subParagraphs[0].innerHTML = "<h1>Mission Accomplished!</h1>";
+        }
+        document.getElementById('chMessage').addEventListener('click', changeMessage);
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 </body>
 </html>
