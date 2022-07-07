@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 </head>
 <body>
-
 <h1 id="main-header">Hello World!</h1>
 <ul>
     <li data-dbid="1">Item 1</li>
@@ -53,16 +52,16 @@
         document.getElementById('chSubHeader').addEventListener('click', changeSubHeader);
 
         // TODO: Uncomment the next line and get all list items
-        var listItems = document.getElementsByTagName("li");
+        var listItems = document.getAttribute("li");
 
         // TODO: Set text color on every other list item to grey
         var changeList = function(event) {
             for(let i = 0; i < 5; i++) {
                 if(i % 2 === 0) {
-                    listItems[i].setAttribute("style", "color: grey")
+                    listItems[i].style.color = "grey";
                 }
             }
-            document.querySelector('[data-dbid="1"]').setAttribute("style", "color: blue")
+            document.querySelector('li[data-dbid="1"]').setAttribute("style", "color: blue")
         }
         document.getElementById('chList').addEventListener('click', changeList);
 
