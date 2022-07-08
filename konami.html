@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Konami Code</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+    <style>
+        .btn-circle.btn-xl {
+            width: 6rem;
+            height: 6rem;
+            font-family: 'Anton', sans-serif;
+            color: white;
+            padding: .625rem 1rem;
+            border-radius: 3rem;
+            border-width: .5rem;
+            border-color: white;
+            font-size: 1rem;
+            background-color: red;
+            align-self: center;
+        }
+    </style>
+</head>
+<body>
+<h1>Konami Code</h1>
+<div class="container row">
+    <div id="display-code" class="container col d-flex">
+    </div>
+</div>
+<script>
+var body = document.querySelector("body");
+var dCode = document.querySelector('#display-code');
+body.addEventListener("keyup", logKey);
+
+// let keyString = "";
+// let code = /ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightbaEnter/
+// let code = new RegExp("ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightbaEnter")
+// function logKey(keyEvent) {
+//     keyString += keyEvent.key;
+//     if(code.test(keyString)) {
+//         alert("You added 30 lives!")
+//         keyString = "";
+//     }
+//     //finds first instance of "ArrowUp" in keyString and deletes everything before it
+//     keyString = keyString.slice(keyString.indexOf("ArrowUp"));
+//     if(keyString.length < 7) {
+//         keyString = "";
+//     }
+//
+//     //define variables for keyString length and Konami code length
+//     let codeLength = code.toString().length,
+//         stringLength = keyString.length;
+//
+//     if(stringLength > codeLength) {
+//         //deletes characters from beginning of keyString when its length exceeds the length of the Konami code
+//         keyString = keyString.slice(stringLength - codeLength);
+//
+//         //finds first instance of "ArrowUp" in keyString and deletes everything before it
+//         keyString = keyString.slice(keyString.indexOf("ArrowUp"));
+//         if(keyString.length < 7) {
+//             keyString = "";
+//         }
+//     }
+//     console.log(keyString);
+//     dCode.innerHTML = displayCode(keyEvent)
+// }
+
+function displayCode(keyArray) {
+    html = "";
+    keyArray.forEach(function(element) {
+        switch (element) {
+            case "ArrowUp":
+                html += '<i class="bi bi-box-arrow-in-up watch" style="font-size:6rem; color:black"></i>'
+                break;
+            case "ArrowDown":
+                html += '<i class="bi bi-box-arrow-in-down watch" style="font-size:6rem; color:black"></i>'
+                break;
+            case "ArrowLeft":
+                html += '<i class="bi bi-box-arrow-in-left watch" style="font-size:6rem; color:black"></i>'
+                break;
+            case "ArrowRight":
+                html += '<i class="bi bi-box-arrow-in-right watch" style="font-size:6rem; color:black"></i>'
+                break;
+            case "a":
+                html += '<button type="button" class="btn btn-circle btn-xl watch" style="font-size:3.5rem; font-weight: bolder">A</button>'
+                break;
+            case "b":
+                html += '<button type="button" class="btn btn-circle btn-xl watch" style="font-size:3.5rem; font-weight: bolder">B</button>'
+                break;
+            case "Enter":
+                html += '<i class="bi bi-align-end watch" style="font-size:6rem; color:#222"></i>'
+                break;
+        }
+    })
+    return html
+}
+
+
+function markForDeletion() {
+    if(document.querySelector('.watch') !== null) {
+        let watched = document.querySelectorAll('.watch');
+        watched.forEach(function (item) {
+            item.style.color = "red";
+            item.setAttribute("class", `${item.getAttribute("class")} marked`);
+        })
+    }
+    setTimeout(deleteMarked, 1000);
+}
+
+function deleteMarked() {
+    if(document.querySelector('.marked') !== null) {
+        let markedItems = document.querySelectorAll('.marked')
+        markedItems.forEach(function(itemToDelete) {
+            itemToDelete.remove();
+        })
+    }
+    keyArray = [];
+}
+
+let keyArray = [];
+let templateArray = [ "ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft",
+    "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a", "Enter" ];
+function logKey(keyEvent) {
+    keyArray.push(keyEvent.key)
+    dCode.innerHTML = displayCode(keyArray)
+    for(let i = 0; i < keyArray.length; i++) {
+        if(keyArray[i] !== templateArray[i]) {
+            markForDeletion();
+        }
+    }
+    if(keyArray.toString() === templateArray.toString()) {
+        alert("You added 30 lives!")
+        markForDeletion();
+    }
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
