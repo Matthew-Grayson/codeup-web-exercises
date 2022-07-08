@@ -123,11 +123,13 @@ let templateArray = [ "ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft
 function logKey(keyEvent) {
     keyArray.push(keyEvent.key)
     dCode.innerHTML = displayCode(keyArray)
+    //compare each keyArray element to each templateArray element of the same element
     for(let i = 0; i < keyArray.length; i++) {
         if(keyArray[i] !== templateArray[i]) {
-            markForDeletion();
+            markForDeletion();  //delete array and visual output
         }
     }
+    //alert user when all elements match
     if(keyArray.toString() === templateArray.toString()) {
         alert("You added 30 lives!")
         markForDeletion();
