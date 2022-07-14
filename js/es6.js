@@ -49,9 +49,9 @@ let emails = [];
 let names = [];
 
 // TODO: rewrite the following using arrow functions
-users.forEach((user) => emails.push(user.email));
+users.forEach(user => emails.push(user.email));
 
-users.forEach((user) => names.push(user.name));
+users.forEach(user => names.push(u  ser.name));
 
 
 // TODO: replace `var` with `let` in the following declaration
@@ -75,3 +75,5 @@ let list = '<ul>';
     list += `<li>${developer}</li>`;
 }
 list += `</ul>`;
+    let htmlBody = document.querySelector("#main");
+    htmlBody.innerHTML = list;
