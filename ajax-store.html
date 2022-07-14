@@ -37,9 +37,11 @@
             });
 
         // TODO: Take the data from inventory.json and append it to the products table
-        function renderRow(row) {
+
+        function renderRows(rows) {
             let rowsHTML = "";
-            rowsHTML += `
+           rows.forEach(function(row) {
+                rowsHTML += `
                 <tr>
                     <td>${row.title}</td>
                     <td>${row.quantity}</td>
@@ -47,15 +49,10 @@
                     <td>${row.categories}</td>
                 </tr>
                 `;
-            return rowsHTML
-        }
-        function renderRows(rows) {
-            let rowsHTML = "";
-            for(let i  = 0; i < rows.length; i++) {
-                rowsHTML += renderRow(rows[i]);
-            }
+            })
             return rowsHTML;
         }
+
         const tbody = document.querySelector("#insertProducts")
         tbody.innerHTML = renderRows(tools);
         const refreshBtn = document.querySelector("#refresh-btn")
