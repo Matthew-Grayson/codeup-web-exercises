@@ -24,7 +24,15 @@ function geocode(search, token) {
             return data.features[0].center;
         });
 }
-
+function centerOnLocationName(e) {
+    e.preventDefault()
+    geocode(searchInput.value, mapboxToken)
+        .then(function(result) {
+            console.log(result);
+            map.setCenter(result);
+            map.setZoom(11);
+        });
+}
 
 /***
  * reverseGeocode is a method to search for a physical address based on inputted coordinates
