@@ -18,8 +18,10 @@
         --mcloudy: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_MostlyCloudy-day_3.jpg");
         --cloudy: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Cloudy-day_1.jpg");
         --drizzle: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Drizzle-day_2.jpg");
-        --rain: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Rain-day_2.jpg")
+        --rain: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Rain-day_2.jpg");
+        --snow: url("https://wxmanreno.files.wordpress.com/2017/02/blizzard-severe.jpg")
     }
+
     .clear {
         background: var(--sunny);
     }
@@ -32,6 +34,14 @@
     .rain {
         background: var(--rain);
     }
+    .snow {
+        background: var(--snow);
+        text-shadow: 2px 2px black;
+    }
+    .card {
+        background-size: 90vh;
+        background-position: center;
+    }
     body {
         background-color: #252525;
     }
@@ -39,7 +49,7 @@
 <div id="page" class="container">
     <div id="five-day-weather" class="card-group justify-content-center" style="padding: 12px"></div>
     <div id="mapcontent" class="container">
-        <div id="map-div" class="" style="justify-items: center; height: 300px">
+        <div id="map-div" class="" style="justify-items: center; height: 400px">
             <form class="" style="z-index: 1; opacity: 75%; float: left; position: relative; top: 1rem; left: 1rem">
                 <div class="form-group" style="width: 100%">
                     <input id="search-input" type="text" class="form-control" placeholder="Search mapbox">
@@ -175,7 +185,7 @@
 
         const searchInput = document.querySelector("#search-input")
         const searchBtn = document.querySelector("#search-btn")
-        searchBtn.addEventListener("click", centerOnLocationName)
+        searchBtn.addEventListener("click", moveMarkerToSearchResultCenter)
 
         const zoomLevel = document.querySelectorAll(".zoom")
         zoomLevel[0].addEventListener("click", event => map.setZoom(16))
