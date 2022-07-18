@@ -30,7 +30,18 @@ function centerOnLocationName(e) {
         .then(function(result) {
             console.log(result);
             map.setCenter(result);
-            map.setZoom(11);
+            map.setZoom(9);
+        });
+}
+function moveMarkerToSearchResultCenter(e) {
+    e.preventDefault()
+    geocode(searchInput.value, mapboxToken)
+        .then(function(result) {
+            console.log(result);
+            map.setCenter(result);
+            map.setZoom(9);
+            marker.setLngLat(result)
+            updateWeather(marker)
         });
 }
 
