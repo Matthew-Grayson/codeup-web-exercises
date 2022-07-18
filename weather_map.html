@@ -12,38 +12,67 @@
 </head>
 <body>
 <style>
+    :root {
+        --sunny: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Sunny-day_2.jpg");
+        --pcloudy: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_PartlyCloudy-day_1.jpg");
+        --mcloudy: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_MostlyCloudy-day_3.jpg");
+        --cloudy: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Cloudy-day_1.jpg");
+        --drizzle: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Drizzle-day_2.jpg");
+        --rain: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Rain-day_2.jpg")
+    }
+    .clear {
+        background: var(--sunny);
+    }
+    .clouds {
+        background: var(--cloudy);
+    }
+    .drizzle {
+        background: var(--drizzle);
+    }
+    .rain {
+        background: var(--rain);
+    }
     body {
-        background-color: #333;
+        background-color: #252525;
     }
 </style>
 <div id="page" class="container">
-    <div id="content" class="container row mt-5">
-        <div class="container col d-flex" style="position: fixed">
-            <div id="map-div" class="" style="width: 90%; position: fixed; height: 600px">
-                <form class="" style="z-index: 1; opacity: 75%; float: left; position: relative; top: 1rem; left: 1rem">
-                    <div class="form-group" style="width: 100%">
-                        <input id="search-input" type="text" class="form-control" placeholder="Search mapbox">
-                    </div>
+    <div id="five-day-weather" class="card-group justify-content-center" style="padding: 12px"></div>
+    <div id="mapcontent" class="container">
+        <div id="map-div" class="" style="justify-items: center; height: 300px">
+            <form class="" style="z-index: 1; opacity: 75%; float: left; position: relative; top: 1rem; left: 1rem">
+                <div class="form-group" style="width: 100%">
+                    <input id="search-input" type="text" class="form-control" placeholder="Search mapbox">
                     <button id="search-btn" class="btn btn-secondary">Search</button>
-                </form>
-                <div class="btn-group-vertical opacity-75" style="z-index: 1; float: right; position: relative; right: 1rem; top: 1rem; height: 20%" role="group" aria-label="Zoom">
-                    <button id="zoom-in" type="button" class="btn btn-light">+</button>
-                    <button id="zoom-out" type="button" class="btn btn-light">-</button>
-                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown"></button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item zoom">Street Level</a></li>
-                        <li><a class="dropdown-item zoom">City Level</a></li>
-                        <li><a class="dropdown-item zoom">State Level</a></li>
-                    </ul>
                 </div>
+            </form>
+            <div class="btn-group-vertical opacity-75" style="z-index: 1; float: right; position: relative; right: 1rem; top: 2.5rem; height: 20%" role="group" aria-label="Zoom">
+                <button id="zoom-in" type="button" class="btn btn-light">+</button>
+                <button id="zoom-out" type="button" class="btn btn-light">-</button>
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown"></button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item zoom">Street Level</a></li>
+                    <li><a class="dropdown-item zoom">City Level</a></li>
+                    <li><a class="dropdown-item zoom">State Level</a></li>
+                </ul>
             </div>
         </div>
     </div>
 </div>
 
-
-
 <script>
+        "use strict";
+        // TODO: Create an AJAX GET request for the file under data/inventory.json
+        const weather = fetch("https://api.openweathermap.org/data/2.5/weather?lat=-98.495141&lon=29.4246&appid=677382ac445a7bd7b329b9afcab4de62")
+            .then(function(response) {
+                if(response.status !== 200) {
+                    console.log("cannot read weather file");
+                    return "";
+                } else
+                    console.log(response.weather)
+                    return response.json();
+            });
+
         mapboxgl.accessToken = mapboxToken;
         const map = new mapboxgl.Map({
             container: 'map-div', // container ID
@@ -52,6 +81,83 @@
             zoom: 10
         });
 
+        let weatherParam = new URLSearchParams({
+            APPID: openWeatherToken,
+            lat: 29.4246,
+            lon: -98.495141,
+            units: "imperial"
+        })
+
+        const weatherQuery = `https://api.openweathermap.org/data/2.5/onecall?${weatherParam}`
+        console.log(weatherQuery)
+        fetch(weatherQuery)
+            .then(function (response) {
+                return response.json();
+            }).then(function (data) {
+            console.log(data.daily)
+            let fiveDayHTML = "";
+            for(let i = 0; i < 5; i++) {
+                let date = new Date(data.daily[i].dt * 1000)
+                fiveDayHTML += `
+                    <div class="card text-white ${data.daily[i].weather[0].main.toLowerCase()}">
+                        <div class="card-body">
+                            <h1 class="card-title day${date.getDay()}"></h1>
+                            <h5 class="card-text">${data.daily[i].temp.max}°F / ${data.daily[i].temp.min}°F</h5>
+                            <h6 class="card-text">${data.daily[i].weather[0].description}</h6>
+                            <div class="card-text"><small>Humidity: ${data.daily[i].humidity}%</small></div>
+                            <div class="card-text"><small>Pressure: ${data.daily[i].pressure} hPa</small></div>
+                        </div>
+                    </div>
+                    `
+            }
+            fiveDay.innerHTML = fiveDayHTML;
+            convertDTGtoDay();
+        });
+
+        function convertDTGtoDay() {
+            const timestamps = document.querySelectorAll(".card-title")
+            timestamps.forEach(function(timestamp) {
+                switch(timestamp.classList[1]) {
+                    case "day0":
+                        timestamp.innerHTML = "Sunday";
+                        break;
+                    case "day1":
+                        timestamp.innerHTML = "Monday";
+                        break;
+                    case "day2":
+                        timestamp.innerHTML = "Tuesday";
+                        break;
+                    case "day3":
+                        timestamp.innerHTML = "Wednesday";
+                        break;
+                    case "day4":
+                        timestamp.innerHTML = "Thursday";
+                        break;
+                    case "day5":
+                        timestamp.innerHTML = "Friday";
+                        break;
+                    case "day6":
+                        timestamp.innerHTML = "Saturday";
+                        break;
+                }
+            })
+        }
+        const fiveDay = document.querySelector("#five-day-weather")
+        // fiveDay.innerHTML = renderCards(weatherQuery)
+        // function renderCards(days) {
+        //     let fiveDayHTML = "";
+        //     days.forEach(function(day) {
+        //         fiveDayHTML += `
+        //         <div>
+        //             // <div>${day.temp.max}</div>
+        //             // <div>${day.temp.min}</div>
+        //             // <div>${day.weather.main}</div>
+        //             <div>${day.humidity}</div>
+        //         </div>
+        //         `
+        //     })
+        //     return fiveDayHTML;
+        // }
 
         const zoomIn = document.querySelector("#zoom-in")
         zoomIn.addEventListener("click", event => map.setZoom(map.getZoom() + 1))
@@ -67,7 +173,6 @@
         zoomLevel[0].addEventListener("click", event => map.setZoom(16))
         zoomLevel[1].addEventListener("click", event => map.setZoom(11))
         zoomLevel[2].addEventListener("click", event => map.setZoom(6))
-
 </script>
 </body>
 </html>
