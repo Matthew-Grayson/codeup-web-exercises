@@ -56,7 +56,8 @@
         mapboxgl.accessToken = mapboxToken;
         const map = new mapboxgl.Map({
             container: 'map-div', // container ID
-            style: 'mapbox://styles/mapbox/satellite-streets-v11' // style URL
+            style: 'mapbox://styles/mapbox/satellite-streets-v11', // style URL
+            zoom: 10,
         });
 
         geocode("Augusta, GA", mapboxToken).then(function(result) {

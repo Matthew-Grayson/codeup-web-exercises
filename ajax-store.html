@@ -24,10 +24,9 @@
 </table>
 <button id="refresh-btn" type="button">Refresh</button>
 <script>
-    (async function() {
         "use strict";
         // TODO: Create an AJAX GET request for the file under data/inventory.json
-        const tools = await fetch("../data/inventory.json")
+        const tools = fetch("../data/inventory.json")
             .then(async function(response) {
                 if(response.status !== 200) {
                     console.log("cannot read tools file");
@@ -42,12 +41,12 @@
             let rowsHTML = "";
            rows.forEach(function(row) {
                 rowsHTML += `
-                <tr>
-                    <td>${row.title}</td>
-                    <td>${row.quantity}</td>
-                    <td>$${row.price.toFixed(2)}</td>
-                    <td>${row.categories}</td>
-                </tr>
+                    <tr>
+                        <td>${row.title}</td>
+                        <td>${row.quantity}</td>
+                        <td>$${row.price.toFixed(2)}</td>
+                        <td>${row.categories}</td>
+                    </tr>
                 `;
             })
             return rowsHTML;
@@ -64,7 +63,6 @@
         //       HINT: Your data should come back as a JSON object; use console.log() to inspect
         //             its contents and fields
         //       HINT: You will want to target #insertProducts for your new HTML elements
-    })();
 </script>
 
 </body>
