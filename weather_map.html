@@ -63,15 +63,15 @@
 <script>
         "use strict";
         // TODO: Create an AJAX GET request for the file under data/inventory.json
-        const weather = fetch("https://api.openweathermap.org/data/2.5/weather?lat=-98.495141&lon=29.4246&appid=677382ac445a7bd7b329b9afcab4de62")
-            .then(function(response) {
-                if(response.status !== 200) {
-                    console.log("cannot read weather file");
-                    return "";
-                } else
-                    console.log(response.weather)
-                    return response.json();
-            });
+        // const weather = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=-98.495141&lon=29.4246&appid=${openWeatherToken}`)
+        //     .then(function(response) {
+        //         if(response.status !== 200) {
+        //             console.log("cannot read weather file");
+        //             return "";
+        //         } else
+        //             console.log(response.weather)
+        //             return response.json();
+        //     });
 
         mapboxgl.accessToken = mapboxToken;
         const map = new mapboxgl.Map({
@@ -81,38 +81,62 @@
             zoom: 10
         });
 
-        let weatherParam = new URLSearchParams({
+
+        let geoSanAntonio = new URLSearchParams({
             APPID: openWeatherToken,
             lat: 29.4246,
             lon: -98.495141,
             units: "imperial"
         })
-
-        const weatherQuery = `https://api.openweathermap.org/data/2.5/onecall?${weatherParam}`
-        console.log(weatherQuery)
-        fetch(weatherQuery)
-            .then(function (response) {
-                return response.json();
-            }).then(function (data) {
-            console.log(data.daily)
-            let fiveDayHTML = "";
-            for(let i = 0; i < 5; i++) {
-                let date = new Date(data.daily[i].dt * 1000)
-                fiveDayHTML += `
-                    <div class="card text-white ${data.daily[i].weather[0].main.toLowerCase()}">
-                        <div class="card-body">
-                            <h1 class="card-title day${date.getDay()}"></h1>
-                            <h5 class="card-text">${data.daily[i].temp.max}°F / ${data.daily[i].temp.min}°F</h5>
-                            <h6 class="card-text">${data.daily[i].weather[0].description}</h6>
-                            <div class="card-text"><small>Humidity: ${data.daily[i].humidity}%</small></div>
-                            <div class="card-text"><small>Pressure: ${data.daily[i].pressure} hPa</small></div>
-                        </div>
-                    </div>
-                    `
+        let marker = new mapboxgl.Marker(
+            {
+                draggable:true
             }
-            fiveDay.innerHTML = fiveDayHTML;
-            convertDTGtoDay();
-        });
+        )
+            .setLngLat([-98.495141, 29.4246])
+            .addTo(map);
+
+        function updateWeather() {
+            let geoMarker = new URLSearchParams({
+                APPID: openWeatherToken,
+                lat: marker.getLngLat().lat,
+                lon: marker.getLngLat().lng,
+                units: "imperial"
+            })
+            renderFiveDayWeather(geoMarker)
+        }
+
+        marker.on("dragend", updateWeather)
+
+
+        function renderFiveDayWeather(geo) {
+            const fiveDay = document.querySelector("#five-day-weather")
+            const weatherQuery = `https://api.openweathermap.org/data/2.5/onecall?${geo}`
+            fetch(weatherQuery)
+                .then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                console.log(data.daily)
+                let fiveDayHTML = "";
+                for(let i = 0; i < 5; i++) {
+                    let date = new Date(data.daily[i].dt * 1000)
+                    fiveDayHTML += `
+                        <div class="card text-white ${data.daily[i].weather[0].main.toLowerCase()}">
+                            <div class="card-body">
+                                <h1 class="card-title day${date.getDay()}"></h1>
+                                <h5 class="card-text">${data.daily[i].temp.max.toFixed(0)}°F / ${data.daily[i].temp.min.toFixed(0)}°F</h5>
+                                <h6 class="card-text">${data.daily[i].weather[0].description}</h6>
+                                <div class="card-text"><small>Humidity: ${data.daily[i].humidity}%</small></div>
+                                <div class="card-text"><small>Pressure: ${data.daily[i].pressure} hPa</small></div>
+                            </div>
+                        </div>
+                        `
+                }
+                fiveDay.innerHTML = fiveDayHTML;
+                convertDTGtoDay();
+            });
+        }
+        renderFiveDayWeather(geoSanAntonio)
 
         function convertDTGtoDay() {
             const timestamps = document.querySelectorAll(".card-title")
@@ -142,22 +166,6 @@
                 }
             })
         }
-        const fiveDay = document.querySelector("#five-day-weather")
-        // fiveDay.innerHTML = renderCards(weatherQuery)
-        // function renderCards(days) {
-        //     let fiveDayHTML = "";
-        //     days.forEach(function(day) {
-        //         fiveDayHTML += `
-        //         <div>
-        //             // <div>${day.temp.max}</div>
-        //             // <div>${day.temp.min}</div>
-        //             // <div>${day.weather.main}</div>
-        //             <div>${day.humidity}</div>
-        //         </div>
-        //         `
-        //     })
-        //     return fiveDayHTML;
-        // }
 
         const zoomIn = document.querySelector("#zoom-in")
         zoomIn.addEventListener("click", event => map.setZoom(map.getZoom() + 1))
