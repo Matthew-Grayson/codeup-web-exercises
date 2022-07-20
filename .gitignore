@@ -1,4 +1,8 @@
 .idea
 *.iml
 .DS_Store
-js/tokens.js
+config.js
+keys.js
+application.properties
+.env
+js/private_constants.js
