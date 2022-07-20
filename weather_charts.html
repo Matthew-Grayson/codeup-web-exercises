@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Map Exercise</title>
+  <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  <script src="js/tokens.js"></script>
+  <script src="js/mapbox-geocoder-utils.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
+</head>
+<body>
+<style>
+  :root {
+    --sunny: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Sunny-day_2.jpg");
+    --pcloudy: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_PartlyCloudy-day_1.jpg");
+    --mcloudy: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_MostlyCloudy-day_3.jpg");
+    --cloudy: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Cloudy-day_1.jpg");
+    --drizzle: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Drizzle-day_2.jpg");
+    --rain: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Rain-day_2.jpg");
+    --snow: url("https://wxmanreno.files.wordpress.com/2017/02/blizzard-severe.jpg")
+    /*https://s.w-x.co/WeatherImages_Web/WeatherImage_SnowShowers-day_1.jpg*/
+  }
+
+  .clear {
+    background: var(--sunny);
+  }
+  .clouds {
+    background: var(--cloudy);
+  }
+  .drizzle {
+    background: var(--drizzle);
+  }
+  .rain {
+    background: var(--rain);
+  }
+  .snow {
+    background: var(--snow);
+    text-shadow: 2px 2px black;
+  }
+  .card {
+    background-size: 120vh;
+    background-position: center;
+  }
+  #hourly-chart.area {
+    height: 200px;
+    max-width: 100%;
+    margin: 0 auto;
+    --color: #c03f18
+  }
+
+  body {
+    background-color: #252525;
+  }
+</style>
+<div id="page" class="container">
+  <div id="mapcontent" class="container">
+    <div id="map-div" class="" style="justify-items: center; height: 350px">
+      <form class="" style="z-index: 1; opacity: 75%; float: left; position: relative; top: 1rem; left: 1rem">
+        <div class="form-group" style="width: 100%">
+          <input id="search-input" type="text" class="form-control" placeholder="Search mapbox">
+          <button id="search-btn" class="btn btn-secondary">Search</button>
+        </div>
+      </form>
+      <div class="btn-group-vertical opacity-75" style="z-index: 1; float: right; position: relative; right: 1rem; top: 2.5rem; height: 20%" role="group" aria-label="Zoom">
+        <button id="zoom-in" type="button" class="btn btn-light">+</button>
+        <button id="zoom-out" type="button" class="btn btn-light">-</button>
+        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown"></button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item zoom">Street Level</a></li>
+          <li><a class="dropdown-item zoom">City Level</a></li>
+          <li><a class="dropdown-item zoom">State Level</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div id="five-day-weather" class="card-group justify-content-center" style="padding: 0px 12px 0px 12px"></div>
+  <table id="hourly-chart" class="charts-css area show-labels">
+    <thead>
+    <tr>
+      <th scope="col">Temperature</th>
+      <th scope="col">Progress</th>
+    </tr>
+    </thead>
+    <tbody id="hourly-tbody"></tbody>
+  </table>
+</div>
+
+<script>
+  "use strict";
+  // TODO: Create an AJAX GET request for the file under data/inventory.json
+
+  mapboxgl.accessToken = mapboxToken;
+  const map = new mapboxgl.Map({
+    container: 'map-div', // container ID
+    style: 'mapbox://styles/mapbox/navigation-night-v1', // style URL
+    center: ["-98.495141", "29.4246"],
+    zoom: 10
+  });
+
+
+  let geoSanAntonio = new URLSearchParams({
+    APPID: openWeatherToken,
+    lat: 29.4246,
+    lon: -98.495141,
+    units: "imperial"
+  })
+  let marker = new mapboxgl.Marker(
+          {
+            draggable:true
+          }
+  )
+          .setLngLat([-98.495141, 29.4246])
+          .addTo(map);
+
+  function updateWeather() {
+    let geoMarker = new URLSearchParams({
+      APPID: openWeatherToken,
+      lat: marker.getLngLat().lat,
+      lon: marker.getLngLat().lng,
+      units: "imperial"
+    })
+    renderFiveDayWeather(geoMarker)
+    renderHourlyWeather(geoMarker)
+  }
+
+  marker.on("dragend", updateWeather)
+
+
+  function renderFiveDayWeather(geo) {
+    const fiveDay = document.querySelector("#five-day-weather")
+    const weatherQuery = `https://api.openweathermap.org/data/2.5/onecall?${geo}`
+    fetch(weatherQuery)
+            .then(function (response) {
+              return response.json();
+            }).then(function (data) {
+      console.log(data.daily)
+      let fiveDayHTML = "";
+      for(let i = 0; i < 5; i++) {
+        let date = new Date(data.daily[i].dt * 1000)
+        fiveDayHTML += `
+          <div class="card text-white ${data.daily[i].weather[0].main.toLowerCase()}">
+              <div class="card-body">
+                  <h1 class="card-title day${date.getDay()} my-0"></h1>
+                  <h5 class="card-text my-0" style="text-shadow: 1px 1px #c03f18">${data.daily[i].temp.max.toFixed(0)}°F  <span style="text-shadow: 1px 1px #1899c0">${data.daily[i].temp.min.toFixed(0)}°F</span></h5>
+                  <h6 class="card-text my-0">${data.daily[i].weather[0].description}</h6>
+                  <div class="card-text"><small>Humidity: ${data.daily[i].humidity}%</small></div>
+                  <div class="card-text"><small>Pressure: ${data.daily[i].pressure} hPa</small></div>
+              </div>
+          </div>`
+      }
+      fiveDay.innerHTML = fiveDayHTML;
+      convertDTGtoDay();
+    });
+  }
+  renderFiveDayWeather(geoSanAntonio)
+
+  function renderHourlyWeather(geo) {
+    const hourly = document.querySelector("#hourly-tbody");
+    const weatherQuery = `https://api.openweathermap.org/data/2.5/onecall?${geo}`;
+    fetch(weatherQuery)
+            .then(function (response) {
+              return response.json();
+            }).then(function (data) {
+              console.log(data.hourly);
+              let hourlyHTML = "";
+              for (let i = 0; i < 23; i++) {
+                let date = new Date(data.hourly[i].dt * 1000);
+                hourlyHTML += `
+                    <tr>
+                        <th scope="row" class="hour hour${date.getHours()}" style="color: white"></th>
+                        <td style="color: white; --start: ${data.hourly[i].temp / 120}; --size: ${data.hourly[i+1].temp / 120}"><span class="data hour${date.getHours()}">${data.hourly[i].temp.toFixed(0)}</span></td>
+                    </tr>`
+              }
+              hourly.innerHTML = hourlyHTML;
+              convertDTGtoHour()
+            })
+  }
+  renderHourlyWeather(geoSanAntonio)
+
+  function convertDTGtoDay() {
+    const timestamps = document.querySelectorAll(".card-title")
+    timestamps.forEach(function(timestamp) {
+      switch(timestamp.classList[1]) {
+        case "day0":
+          timestamp.innerHTML = "Sunday";
+          break;
+        case "day1":
+          timestamp.innerHTML = "Monday";
+          break;
+        case "day2":
+          timestamp.innerHTML = "Tuesday";
+          break;
+        case "day3":
+          timestamp.innerHTML = "Wednesday";
+          break;
+        case "day4":
+          timestamp.innerHTML = "Thursday";
+          break;
+        case "day5":
+          timestamp.innerHTML = "Friday";
+          break;
+        case "day6":
+          timestamp.innerHTML = "Saturday";
+          break;
+      }
+    })
+  }
+  function convertDTGtoHour() {
+    const timestamps = document.querySelectorAll(".hour")
+    timestamps.forEach(function(timestamp) {
+      switch(timestamp.classList[1]) {
+        case "hour0":
+          timestamp.innerHTML = "12AM";
+          break;
+        case "hour1":
+          timestamp.innerHTML = "1AM";
+          break;
+        case "hour2":
+          timestamp.innerHTML = "2AM";
+          break;
+        case "hour3":
+          timestamp.innerHTML = "3AM";
+          break;
+        case "hour4":
+          timestamp.innerHTML = "4AM";
+          break;
+        case "hour5":
+          timestamp.innerHTML = "5AM";
+          break;
+        case "hour6":
+          timestamp.innerHTML = "6AM";
+          break;
+        case "hour7":
+          timestamp.innerHTML = "7AM";
+          break;
+        case "hour8":
+          timestamp.innerHTML = "8AM";
+          break;
+        case "hour9":
+          timestamp.innerHTML = "9AM";
+          break;
+        case "hour10":
+          timestamp.innerHTML = "10AM";
+          break;
+        case "hour11":
+          timestamp.innerHTML = "11AM";
+          break;
+        case "hour12":
+          timestamp.innerHTML = "12PM";
+          break;
+        case "hour13":
+          timestamp.innerHTML = "1PM";
+          break;
+        case "hour14":
+          timestamp.innerHTML = "2PM";
+          break;
+        case "hour15":
+          timestamp.innerHTML = "3PM";
+          break;
+        case "hour16":
+          timestamp.innerHTML = "4PM";
+          break;
+        case "hour17":
+          timestamp.innerHTML = "5PM";
+          break;
+        case "hour18":
+          timestamp.innerHTML = "6PM";
+          break;
+        case "hour19":
+          timestamp.innerHTML = "7PM";
+          break;
+        case "hour20":
+          timestamp.innerHTML = "8PM";
+          break;
+        case "hour21":
+          timestamp.innerHTML = "9PM";
+          break;
+        case "hour22":
+          timestamp.innerHTML = "10PM";
+          break;
+        case "hour23":
+          timestamp.innerHTML = "11PM";
+          break;
+      }
+    })
+  }
+
+  const zoomIn = document.querySelector("#zoom-in")
+  zoomIn.addEventListener("click", event => map.setZoom(map.getZoom() + 1))
+
+  const zoomOut = document.querySelector("#zoom-out")
+  zoomOut.addEventListener("click", event => map.setZoom(map.getZoom() - 1))
+
+  const searchInput = document.querySelector("#search-input")
+  const searchBtn = document.querySelector("#search-btn")
+  searchBtn.addEventListener("click", moveMarkerToSearchResultCenter)
+
+  const zoomLevel = document.querySelectorAll(".zoom")
+  zoomLevel[0].addEventListener("click", event => map.setZoom(16))
+  zoomLevel[1].addEventListener("click", event => map.setZoom(11))
+  zoomLevel[2].addEventListener("click", event => map.setZoom(6))
+</script>
+</body>
+</html>

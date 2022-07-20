@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Map Exercise</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="js/tokens.js"></script>
+    <script src="js/mapbox-geocoder-utils.js"></script>
+</head>
+<body>
+<style>
+    :root {
+        --sunny: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Sunny-day_2.jpg");
+        --pcloudy: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_PartlyCloudy-day_1.jpg");
+        --mcloudy: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_MostlyCloudy-day_3.jpg");
+        --cloudy: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Cloudy-day_1.jpg");
+        --drizzle: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Drizzle-day_2.jpg");
+        --rain: url("https://s.w-x.co/WeatherImages_Web/WeatherImage_Rain-day_2.jpg");
+        --snow: url("https://wxmanreno.files.wordpress.com/2017/02/blizzard-severe.jpg")
+        /*https://s.w-x.co/WeatherImages_Web/WeatherImage_SnowShowers-day_1.jpg*/
+    }
+
+    .clear {
+        background: var(--sunny);
+    }
+    .clouds {
+        background: var(--cloudy);
+    }
+    .drizzle {
+        background: var(--drizzle);
+    }
+    .rain {
+        background: var(--rain);
+    }
+    .snow {
+        background: var(--snow);
+        text-shadow: 2px 2px black;
+    }
+    .card {
+        background-size: 120vh;
+        background-position: center;
+    }
+    body {
+        background-color: #252525;
+    }
+    #hourly-chart.area {
+        height: 400px;
+        max-width: 100%;
+        margin: 0 auto;
+        --color: #c03f18
+    }
+</style>
+<div id="page" class="container">
+    <div id="five-day-weather" class="card-group justify-content-center" style="padding: 12px">
+        <div id="page" class="container">
+            <ul id="five-day-weather" class="nav justify-content-center" style="padding: 12px">
+                <li class="card btn nav-item text-white clear" data-bs-toggle="tab" data-bs-target="#day1" role="tab">
+                    <div class="card-body">
+                        <h1 class="card-title day2">Tue</h1>
+                        <h5 class="card-text">103°F / 78°F</h5>
+                    </div>
+                </li>
+                <li class="card     btn nav-item text-white clear" data-bs-toggle="tab" data-bs-target="#day2" role="tab">
+                    <div class="card-body">
+                        <h1 class="card-title day3">Wed</h1>
+                        <h5 class="card-text">105°F / 77°F</h5>
+                    </div>
+                </li>
+                <li class="card btn nav-item text-white clouds">
+                    <div class="card-body">
+                        <h1 class="card-title day4">Thu</h1>
+                        <h5 class="card-text">105°F / 77°F</h5>
+                    </div>
+                </li>
+                <li class="card btn nav-item text-white clouds">
+                    <div class="card-body">
+                        <h1 class="card-title day5">Fri</h1>
+                        <h5 class="card-text">103°F / 75°F</h5>
+                    </div>
+                </li>
+                <li class="card btn nav-item text-white clouds">
+                    <div class="card-body">
+                        <h1 class="card-title day6">Sat</h1>
+                        <h5 class="card-text">102°F / 75°F</h5>
+                    </div>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="day1" role="tabpanel" aria-labelledby="size-crust-tab">
+                    <div class="card mb-2">
+                        <table>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                <div class="tab-pane fade" id="day2" role="tabpanel" aria-labelledby="cheese-sauce-tab">
+                    <div class="card mb-2">
+                        <div class="p-3 mb-2 bg-primary text-white">Choose Cheese and Sauce</div>
+                        <div class="card m-3">
+                            <div class="card-header">
+                                Cheese
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">How Much?</li>
+                                <li class="list-group-item d-flex">
+                                    <select class="form-select">
+                                        <option value="1">Extra</option>
+                                        <option selected value="2">Normal</option>
+                                        <option value="3">Light</option>
+                                        <option value="4">None</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card m-3">
+                            <div class="card-header">
+                                Sauce
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">What Type?</li>
+                                <li class="list-group-item d-flex">
+                                    <select class="form-select">
+                                        <option selected value="1">Marinara</option>
+                                        <option value="2">Alfredo</option>
+                                        <option value="3">Buffalo</option>
+                                        <option value="4">None</option>
+                                    </select>
+                                </li>
+                                <li class="list-group-item">How Much?</li>
+                                <li class="list-group-item d-flex">
+                                    <select class="form-select">
+                                        <option value="1">Extra</option>
+                                        <option selected value="2">Normal</option>
+                                        <option value="3">Light</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-footer d-grid d-flex justify-content-end">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-primary">< Previous</button>
+                                <button type="button" class="btn btn-primary">Next ></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="toppings" role="tabpanel" aria-labelledby="toppings-tab">
+                    <div class="card mb-2">
+                        <div class="p-3 mb-2 bg-primary text-white">Choose Toppings</div>
+                        <div class="card m-3">
+                            <div class="card-header">
+                                Choose Meats
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="pepperoni" id="pepperoni">
+                                        <label class="form-check-label" for="pepperoni">
+                                            Pepperoni
+                                        </label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="sausage" id="sausage">
+                                        <label class="form-check-label" for="sausage">
+                                            Sausage
+                                        </label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="bacon" id="bacon">
+                                        <label class="form-check-label" for="bacon">
+                                            Bacon
+                                        </label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="ham" id="ham">
+                                        <label class="form-check-label" for="ham">
+                                            Ham
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card m-3">
+                            <div class="card-header">
+                                Choose Non-Meats
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="mushrooms" id="mushrooms">
+                                        <label class="form-check-label" for="mushrooms">
+                                            Mushrooms
+                                        </label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="greenpeppers" id="greenpeppers">
+                                        <label class="form-check-label" for="greenpeppers">
+                                            Green Peppers
+                                        </label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="jalepeños" id="jalepeños">
+                                        <label class="form-check-label" for="jalepeños">
+                                            Jalepeños
+                                        </label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="pineapple" id="pineapple">
+                                        <label class="form-check-label" for="pineapple">
+                                            Pineapple
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-footer d-grid d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary">
+                                Checkout <i class="bi bi-cart-fill"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--    <div id="mapcontent" class="container">-->
+<!--        <div id="map-div" class="" style="justify-items: center; height: 400px">-->
+<!--            <form class="" style="z-index: 1; opacity: 75%; float: left; position: relative; top: 1rem; left: 1rem">-->
+<!--                <div class="form-group" style="width: 100%">-->
+<!--                    <input id="search-input" type="text" class="form-control" placeholder="Search mapbox">-->
+<!--                    <button id="search-btn" class="btn btn-secondary">Search</button>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--            <div class="btn-group-vertical opacity-75" style="z-index: 1; float: right; position: relative; right: 1rem; top: 2.5rem; height: 20%" role="group" aria-label="Zoom">-->
+<!--                <button id="zoom-in" type="button" class="btn btn-light">+</button>-->
+<!--                <button id="zoom-out" type="button" class="btn btn-light">-</button>-->
+<!--                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown"></button>-->
+<!--                <ul class="dropdown-menu">-->
+<!--                    <li><a class="dropdown-item zoom">Street Level</a></li>-->
+<!--                    <li><a class="dropdown-item zoom">City Level</a></li>-->
+<!--                    <li><a class="dropdown-item zoom">State Level</a></li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
+
+<script>
+    "use strict";
+    // TODO: Create an AJAX GET request for the file under data/inventory.json
+
+    // mapboxgl.accessToken = mapboxToken;
+    // const map = new mapboxgl.Map({
+    //     container: 'map-div', // container ID
+    //     style: 'mapbox://styles/mapbox/navigation-night-v1', // style URL
+    //     center: ["-98.495141", "29.4246"],
+    //     zoom: 10
+    // });
+    //
+    //
+    // let geoSanAntonio = new URLSearchParams({
+    //     APPID: openWeatherToken,
+    //     lat: 29.4246,
+    //     lon: -98.495141,
+    //     units: "imperial"
+    // })
+    // let marker = new mapboxgl.Marker(
+    //     {
+    //         draggable:true
+    //     }
+    // )
+    //     .setLngLat([-98.495141, 29.4246])
+    //     .addTo(map);
+    //
+    // function updateWeather() {
+    //     let geoMarker = new URLSearchParams({
+    //         APPID: openWeatherToken,
+    //         lat: marker.getLngLat().lat,
+    //         lon: marker.getLngLat().lng,
+    //         units: "imperial"
+    //     })
+    //     renderFiveDayWeather(geoMarker)
+    // }
+    //
+    // marker.on("dragend", updateWeather)
+
+
+    // function renderFiveDayWeather(geo) {
+    //     const fiveDay = document.querySelector("#five-day-weather")
+    //     const weatherQuery = `https://api.openweathermap.org/data/2.5/onecall?${geo}`
+    //     fetch(weatherQuery)
+    //         .then(function (response) {
+    //             return response.json();
+    //         }).then(function (data) {
+    //         console.log(data.daily)
+    //         let fiveDayHTML = "";
+    //         for(let i = 0; i < 5; i++) {
+    //             let date = new Date(data.daily[i].dt * 1000)
+    //             fiveDayHTML += `
+    //                     <div class="card text-white ${data.daily[i].weather[0].main.toLowerCase()}">
+    //                         <div class="card-body">
+    //                             <h1 class="card-title day${date.getDay()}"></h1>
+    //                             <h5 class="card-text">${data.daily[i].temp.max.toFixed(0)}°F / ${data.daily[i].temp.min.toFixed(0)}°F</h5>
+    //                             <h6 class="card-text">${data.daily[i].weather[0].description}</h6>
+    //                             <div class="card-text"><small>Humidity: ${data.daily[i].humidity}%</small></div>
+    //                             <div class="card-text"><small>Pressure: ${data.daily[i].pressure} hPa</small></div>
+    //                         </div>
+    //                     </div>
+    //                     `
+    //         }
+    //         fiveDay.innerHTML = fiveDayHTML;
+    //         convertDTGtoDay();
+    //     });
+    // }
+    // renderFiveDayWeather(geoSanAntonio)
+    //
+    // function convertDTGtoDay() {
+    //     const timestamps = document.querySelectorAll(".card-title")
+    //     timestamps.forEach(function(timestamp) {
+    //         switch(timestamp.classList[1]) {
+    //             case "day0":
+    //                 timestamp.innerHTML = "Sunday";
+    //                 break;
+    //             case "day1":
+    //                 timestamp.innerHTML = "Monday";
+    //                 break;
+    //             case "day2":
+    //                 timestamp.innerHTML = "Tuesday";
+    //                 break;
+    //             case "day3":
+    //                 timestamp.innerHTML = "Wednesday";
+    //                 break;
+    //             case "day4":
+    //                 timestamp.innerHTML = "Thursday";
+    //                 break;
+    //             case "day5":
+    //                 timestamp.innerHTML = "Friday";
+    //                 break;
+    //             case "day6":
+    //                 timestamp.innerHTML = "Saturday";
+    //                 break;
+    //         }
+    //     })
+    // }
+    //
+    // const zoomIn = document.querySelector("#zoom-in")
+    // zoomIn.addEventListener("click", event => map.setZoom(map.getZoom() + 1))
+    //
+    // const zoomOut = document.querySelector("#zoom-out")
+    // zoomOut.addEventListener("click", event => map.setZoom(map.getZoom() - 1))
+    //
+    // const searchInput = document.querySelector("#search-input")
+    // const searchBtn = document.querySelector("#search-btn")
+    // searchBtn.addEventListener("click", moveMarkerToSearchResultCenter)
+    //
+    // const zoomLevel = document.querySelectorAll(".zoom")
+    // zoomLevel[0].addEventListener("click", event => map.setZoom(16))
+    // zoomLevel[1].addEventListener("click", event => map.setZoom(11))
+    // zoomLevel[2].addEventListener("click", event => map.setZoom(6))
+</script>
+</body>
+</html>
