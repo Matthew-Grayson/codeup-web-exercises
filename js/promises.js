@@ -3,13 +3,12 @@ const options = {
     headers: {
         "Authorization": githubToken
     }
-}
+};
 
 function returnDateOfLastCommit(username) {
     fetch(`https://api.github.com/users/${username}/events/public`, options)
         .then(response => response.json())
-        .then(data =>
-            console.log(data[0].created_at))
+        .then(data => console.log(data[0].created_at))
         .catch(error => console.error(error));
 }
 
