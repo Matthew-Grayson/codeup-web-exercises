@@ -138,12 +138,11 @@ function logKey(keyEvent) {
         alert("You added 30 lives!")
         const successMsg = document.querySelector("#success-msg");
 
-        successMsg.innerHTML = `<img id="success-img" src="img/shoryuken.gif" alt=""/>`
+        successMsg.innerHTML += `<img id="success-img" src="img/shoryuken.gif" alt=""/>`
         markForDeletion();
         setTimeout(function() {
-            successImg = document.querySelector("#success-img");
-            successMsg.innerHTML = ``;
-        }, 1800)
+            successMsg.innerHTML = successMsg.innerHTML.replaceAll("shoryuken.gif", "shoryuken-still.gif");
+        }, 1700)
     }
 }
 </script>
