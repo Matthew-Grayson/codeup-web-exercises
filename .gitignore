@@ -6,3 +6,4 @@ keys.js
 application.properties
 .env
 js/private_constants.js
+jalopy-main/js/private_constants.js
