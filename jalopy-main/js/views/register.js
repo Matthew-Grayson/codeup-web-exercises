@@ -29,7 +29,7 @@ export default function Register(props) {
 `;
 }
 
-export function RegisterEvent(){
+export function registerEvent(){
     console.log("am I logged in ? " + isLoggedIn());
 
     document.querySelector("#register-btn").addEventListener("click", function(){

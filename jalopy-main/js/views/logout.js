@@ -5,8 +5,8 @@ export default function Logout(props) {
     return ``;
 }
 
-export function LogoutEvents() {
-    console.log("Calling LogoutEvents...");
+export function logoutEvents() {
+    console.log("Calling logoutEvents...");
     window.localStorage.removeItem("access_token");
     window.localStorage.removeItem("refresh_token");
     createView("/login");

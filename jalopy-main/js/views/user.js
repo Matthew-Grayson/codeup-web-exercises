@@ -25,7 +25,7 @@ export default function UserIndex(props) {
     `;
 }
 
-export function UserEvents() {
+export function userEvents() {
     $("#change-password-button").click(function() {
         const id = 1; // $("#add-post-id").val();
         let uriExtra = '/1/updatePassword';

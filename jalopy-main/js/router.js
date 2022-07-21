@@ -1,13 +1,13 @@
-import Home, {HomeEvents} from "./views/Home.js";
-import About, {AboutEvents} from "./views/About.js";
-import Error404 from "./views/Error404.js";
-import Loading from "./views/Loading.js";
-import Login from "./views/Login.js";
+import home, {homeEvents} from "./views/home.js";
+import aboutHTML, {aboutEvents} from "./views/about.js";
+import error404 from "./views/error404.js";
+import loading from "./views/loading.js";
+import login from "./views/login.js";
 import LoginEvent from "./auth.js";
-import Register from "./views/Register.js"
-import {RegisterEvent} from "./views/Register.js";
-import UserIndex, {UserEvents} from "./views/User.js";
-import Logout, {LogoutEvents} from "./views/Logout.js";
+import register from "./views/register.js"
+import {registerEvent} from "./views/register.js";
+import userIndex, {userEvents} from "./views/user.js";
+import logout, {logoutEvents} from "./views/logout.js";
 
 /**
  * Returns the route object for a specific route based on the given URI
@@ -17,58 +17,58 @@ import Logout, {LogoutEvents} from "./views/Logout.js";
 export default function router(URI) {
     const routes = {
         '/': {
-            returnView: Home,
+            returnView: home,
             state: {},
             uri: '/',
-            title: 'Home',
-            viewEvent: HomeEvents
+            title: 'home',
+            viewEvent: homeEvents
         },
         '/logout': {
-            returnView: Logout,
+            returnView: logout,
             state: {},
             uri: '/',
-            title: 'Logout',
-            viewEvent: LogoutEvents
+            title: 'logout',
+            viewEvent: logoutEvents
         },
         '/login': {
-            returnView: Login,
+            returnView: login,
             state: {},
             uri: '/login',
-            title: "Login",
+            title: "login",
             viewEvent: LoginEvent
         },
         '/register': {
-            returnView: Register,
+            returnView: register,
             state: {},
             uri: '/register',
-            title: 'Register',
-            viewEvent: RegisterEvent
+            title: 'register',
+            viewEvent: registerEvent
         },
         '/users': {
-            returnView: UserIndex,
+            returnView: userIndex,
             state: {},
             uri: "/users",
             title: 'User Info',
-            viewEvent: UserEvents
+            viewEvent: userEvents
         },
         '/about': {
-            returnView: About,
+            returnView: aboutHTML,
             state: {},
             uri: '/about',
-            title: 'About',
-            viewEvent: AboutEvents
+            title: 'aboutHTML',
+            viewEvent: aboutEvents
         },
         '/error': {
-            returnView: Error404,
+            returnView: error404,
             state: {},
             uri: location.pathname,
             title: ' ERROR',
         },
         '/loading': {
-            returnView: Loading,
+            returnView: loading,
             state: {},
             uri: location.pathname,
-            title: 'Loading...',
+            title: 'loading...',
         }
     };
 
