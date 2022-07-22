@@ -40,9 +40,9 @@ export default function aboutHTML(props) {
         </main>
     `;
 }
-function chageAboutText() {
+function changeAboutText() {
     document.querySelector("#about-text").innerText = "Hello World!"
 }
 export function aboutEvents() {
-    document.querySelector("#change-about-text").addEventListener("click", chageAboutText);
+    document.querySelector("#change-about-text").addEventListener("click", changeAboutText);
 }
