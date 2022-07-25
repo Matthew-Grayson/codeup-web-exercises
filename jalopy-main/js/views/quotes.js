@@ -1,4 +1,4 @@
-const quotes = [
+let quotes = [
     {
         quote: "War is organized murder and torture against our brothers.",
         author: "Alfred Adler"
@@ -48,13 +48,15 @@ const quotes = [
         author: 'Shelby'
     },
     {
-        quote: 'I know that look, you- just killed someone.',
+        quote: 'I know that look. You... just killed someone.',
         author: 'BMO'
     }
 ]
 
 export default function quotesView(props) {
     // language=HTML
+    console.log(props.quotes);
+    quotes = props.quotes
     return `
         <header>
             <h1 style="text-align: center">Quotes Page</h1>
@@ -64,10 +66,11 @@ export default function quotesView(props) {
                 <div id="my-quotes" class="container row"></div>
             </div>
             <div class="container col-3">
+                <h4>Add a Quote</h4>
                 <form>
                     <div class="mb-2">
                         <label for="quote-add">Quote</label>
-                        <input type="text" class="form-control" id="quote-add">
+                        <textarea type="text" class="form-control" id="quote-add" rows="7"></textarea>
                     </div>
                     <div class="mb-2">
                         <label for="author-add">Author</label>
@@ -83,24 +86,27 @@ export default function quotesView(props) {
 }
 
 export function quotesEvents() {
-    const quoteBody = document.querySelector("#my-quotes")
     const quoteBtn = document.querySelector("#quote-btn")
     quoteBtn.addEventListener('click', addQuote)
+    let quoteBody = document.querySelector("#my-quotes")
     let quotesHTML = '';
     quotes.forEach(function(elem) {
         quotesHTML += `
             <div class="container col-4 p-3">
-                <h5 style="font-style: italic">"${elem.quote}"</h5>
+                    <h5 style="font-style: italic">"${elem.quote}"</h5>
                 <h6>-${elem.author}</h6>
             </div>  
 `
     })
-    quoteBody.innerHTML = quotesHTML;
+    quoteBody.innerHTML =  quotesHTML;
 }
 
 export function addQuote() {
     const quoteAdd = document.querySelector("#quote-add");
     const authorAdd = document.querySelector("#author-add");
+    if(quoteAdd.value.trim().length === 0) {
+        return alert
+    }
     quotes.push({quote: quoteAdd.value, author: authorAdd.value});
     quotesEvents();
 }
